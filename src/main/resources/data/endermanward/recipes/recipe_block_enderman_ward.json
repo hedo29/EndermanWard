@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " e ",
+    "ese",
+    " e "
+  ],
+  "key": {
+    "s": {
+      "item": "minecraft:chiseled_stone_bricks"
+    },
+    "e": {
+      "item": "minecraft:ender_pearl"
+    }
+  },
+  "result": {
+    "item": "endermanward:enderman_ward"
+  }
+}
