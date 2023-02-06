@@ -14,7 +14,7 @@ public class ItemRegistrar {
 
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, EndermanWard.MOD_ID);
 
-    public static final RegistryObject<Item> ITEM_GILDED_PORTAL = ItemRegistrar.ITEMS.register(BlockEndermanWard.REG_NAME, () -> new BlockItem(BlockRegistrar.BLOCK_ENDERMAN_WARD.get(), new Item.Properties()));
+    public static final RegistryObject<Item> ITEM_ENDERMAN_WARD = ItemRegistrar.ITEMS.register(BlockEndermanWard.REG_NAME, () -> new BlockItem(BlockRegistrar.BLOCK_ENDERMAN_WARD.get(), new Item.Properties()));
 
     public static void register()
     {

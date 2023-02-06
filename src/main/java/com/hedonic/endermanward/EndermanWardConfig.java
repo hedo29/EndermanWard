@@ -4,8 +4,6 @@ import net.minecraftforge.fml.ModList;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class EndermanWardConfig {
@@ -17,6 +15,8 @@ public class EndermanWardConfig {
     public static final boolean DEFAULT_ALLOW_TELEPORT = true;
 
     public static final boolean DEFAULT_ALLOW_GRIEF = false;
+
+    public static final boolean DEFAULT_TELEPORT_FROM_WARD = false;
 
     public static final ServerConfig SERVER;
     public static final ForgeConfigSpec SERVER_SPEC;
@@ -37,6 +37,8 @@ public class EndermanWardConfig {
 
     public static boolean allowGriefing = DEFAULT_ALLOW_GRIEF;
 
+    public static boolean teleportOnWardDetection = DEFAULT_TELEPORT_FROM_WARD;
+
     public static String logLevel = "error";
 
     public static class ServerConfig
@@ -49,6 +51,8 @@ public class EndermanWardConfig {
 
         public final ConfigValue<Boolean> allowGriefing;
 
+        public final ConfigValue<Boolean> teleportOnWardDetection;
+
         public final ConfigValue<String> logLevel;
 
         ServerConfig(ForgeConfigSpec.Builder builder)
@@ -60,7 +64,8 @@ public class EndermanWardConfig {
             wardRadius = builder.comment("Sets the range of where enderman behavior will be prevented in a square distance around the ward.").translation("config.endermanward.wardRadius").define("wardRadius", 64);
             allowTeleporting = builder.comment("If FALSE, endermen will be unable to teleport within the range of the ward.").translation("config.endermanward.allowTeleporting").define("allowTeleporting", true);
             allowGriefing = builder.comment("If FALSE, endermen will be unable to pick up nor place blocks within the range of the ward.").translation("config.endermanward.allowGriefing").define("allowGriefing", false);
-            logLevel = builder.comment("Can be used to limit log spam. Can be set to 'all', 'warn', or 'error'.").translation("config.endermanward.logLevel").define("loglevel", "true");
+            teleportOnWardDetection = builder.comment("If TRUE, endermen will be sent to the maximum range of the ward upon doing something they weren't allowed to do.").translation("config.endermanward.teleportOnWardDetection").define("teleportOnWardDetection", false);
+            logLevel = builder.comment("Can be used to limit log spam. Can be set to 'all', 'warn', or 'error'.").translation("config.endermanward.logLevel").define("loglevel", "warn");
             builder.pop();
         }
     }
@@ -72,6 +77,7 @@ public class EndermanWardConfig {
         wardRadius = SERVER.wardRadius.get();
         allowTeleporting = SERVER.allowTeleporting.get();
         allowGriefing = SERVER.allowGriefing.get();
+        teleportOnWardDetection = SERVER.teleportOnWardDetection.get();
         logLevel = SERVER.logLevel.get();
 
     }

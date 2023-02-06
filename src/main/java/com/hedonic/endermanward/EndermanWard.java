@@ -1,6 +1,8 @@
 package com.hedonic.endermanward;
 
 import com.hedonic.endermanward.block.BlockRegistrar;
+import com.hedonic.endermanward.eventhandler.EndermanEventHandler;
+import com.hedonic.endermanward.eventhandler.WardEventHandler;
 import com.hedonic.endermanward.item.ItemRegistrar;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -22,6 +24,10 @@ public class EndermanWard
     public static final String MOD_ID = "endermanward"; // this must match mods.toml
     public static final String RESOURCE_PREFIX = MOD_ID + ":";
 
+    private static final EndermanEventHandler emEventHandler = new EndermanEventHandler();
+
+    private static final WardEventHandler wEventHandler = new WardEventHandler();
+
     public EndermanWard()
     {
         BlockRegistrar.register();
@@ -31,6 +37,8 @@ public class EndermanWard
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::modConfig);
 
         // Register ourselves for server, registry and other game events we are interested in
+        MinecraftForge.EVENT_BUS.register(emEventHandler);
+        MinecraftForge.EVENT_BUS.register(wEventHandler);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, EndermanWardConfig.SERVER_SPEC);
 

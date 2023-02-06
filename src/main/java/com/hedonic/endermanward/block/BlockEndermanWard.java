@@ -1,12 +1,17 @@
 package com.hedonic.endermanward.block;
 
-import net.minecraft.world.entity.decoration.ArmorStand;
+import com.hedonic.endermanward.WardData;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.item.ItemStack;
 
 public class BlockEndermanWard extends Block {
 
@@ -14,11 +19,18 @@ public class BlockEndermanWard extends Block {
 
     public BlockEndermanWard ()
     {
-        super(BlockBehaviour.Properties.of(Material.DECORATION).strength(2).sound(SoundType.WOOD));
+        super(BlockBehaviour.Properties.of(Material.STONE).strength(2).sound(SoundType.STONE));
     }
+
 
     @Override
     public RenderShape getRenderShape(BlockState iBlockState) {
         return RenderShape.MODEL;
     }
+
+    @Override
+    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, BlockEntity entity, ItemStack stack) {
+        WardData.get(level).removeFromList(pos);
+    }
+
 }
