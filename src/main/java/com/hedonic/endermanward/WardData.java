@@ -31,7 +31,7 @@ public class WardData extends SavedData {
            }
         }
         catch  (Exception e) {
-            LOGGER.error("Tried to remove ward from ward list at " + block.getX() +  ", " + block.getY() + ", " + block.getZ() + ",  but it wasn't" +
+            LOGGER.error("Tried to remove ward from ward list at " + block.getX() +  ", " + block.getY() + ", " + block.getZ() + ",  but it wasn't " +
                     "registered as a ward. This can happen if you had a ward placed before the mod actually worked.");
         }
         finally {
@@ -64,7 +64,7 @@ public class WardData extends SavedData {
 
     //Recreate ward list from data.
     public static WardData load(CompoundTag tag) {
-        LOGGER.debug("Recreate ward list from data.");
+
         ListTag wards = tag.getList("wards", tag.getId());
 
         WardData data = create();
@@ -85,7 +85,6 @@ public class WardData extends SavedData {
 
     @Override
     public CompoundTag save(CompoundTag tag) {
-        LOGGER.debug("Saving new ward placements.");
         ListTag wards = new ListTag();
         wardList.forEach(ward -> {
             CompoundTag wardTag = new CompoundTag();

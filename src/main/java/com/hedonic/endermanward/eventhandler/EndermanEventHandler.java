@@ -2,12 +2,9 @@ package com.hedonic.endermanward.eventhandler;
 
 import com.hedonic.endermanward.EndermanWardConfig;
 import com.hedonic.endermanward.WardData;
-import com.hedonic.endermanward.block.BlockEndermanWard;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.monster.EnderMan;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.event.entity.EntityMobGriefingEvent;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -27,11 +24,9 @@ public class EndermanEventHandler {
             if (checkIfNearWard((EnderMan) event.getEntity())) {
                 if (!EndermanWardConfig.allowGriefing) {
                     event.setResult(Event.Result.DENY);
-                    LOGGER.debug("Ward found. Denying grief.");
                     if (EndermanWardConfig.teleportOnWardDetection)
                         teleportAwayFromWard((EnderMan) event.getEntity());
                 } else {
-                    LOGGER.debug("Ward not found. Allowing grief.");
                 }
             }
         }
@@ -43,11 +38,9 @@ public class EndermanEventHandler {
             if (checkIfNearWard((EnderMan) event.getEntity())) {
                 if (!EndermanWardConfig.allowTeleporting) {
                     event.setCanceled(true);
-                    LOGGER.debug("Ward found. Cancelling teleport.");
                     if (EndermanWardConfig.teleportOnWardDetection)
                         teleportAwayFromWard((EnderMan) event.getEntity());
                 } else {
-                    LOGGER.debug("Ward not found. Allowing teleport.");
                 }
             }
         }
@@ -65,7 +58,6 @@ public class EndermanEventHandler {
             if(wardPos.getX() - 64 < cur_x || wardPos.getX() + 64 > cur_x
                 || wardPos.getY() - 64 < cur_y || wardPos.getY() + 64 > cur_y
                 || wardPos.getZ() - 64 < cur_z || wardPos.getZ() + 64 > cur_z) {
-                LOGGER.debug("Nearby ward found at " + wardPos.getX() + ", " + wardPos.getY() + ", " + wardPos.getZ());
                 return true;
             }
         };
