@@ -10,7 +10,7 @@ public class EndermanWardConfig {
 
     public static final int DEFAULT_CONFIG_VERSION = 4;
 
-    public static final int DEFAULT_WARD_RADIUS = 4;
+    public static final int DEFAULT_WARD_RADIUS = 64;
 
     public static final boolean DEFAULT_ALLOW_TELEPORT = true;
 
