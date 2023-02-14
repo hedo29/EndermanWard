@@ -1,7 +1,9 @@
 package com.hedonic.endermanward.block;
 
+import com.hedonic.endermanward.EndermanWardConfig;
 import com.hedonic.endermanward.WardData;
 import net.minecraft.core.BlockPos;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -31,6 +33,14 @@ public class BlockEndermanWard extends Block {
     @Override
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, BlockEntity entity, ItemStack stack) {
         WardData.get(level).removeFromList(pos);
+        if(EndermanWardConfig.dropOnDestroy) {
+            super.playerDestroy(level, player, pos, state, entity, stack);
+        } else {
+            player.awardStat(Stats.BLOCK_MINED.get(this));
+            player.causeFoodExhaustion(0.005F);
+        }
+
+
     }
 
 }

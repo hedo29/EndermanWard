@@ -53,6 +53,14 @@ public class EndermanWard
         }
     }
 
+    public static void logMessageDebug(String message)
+    {
+        if (EndermanWardConfig.logLevel.equalsIgnoreCase("all"))
+        {
+            EndermanWard.LOGGER.debug(message);
+        }
+    }
+
     public static void logMessageInfo(String message)
     {
         if (EndermanWardConfig.logLevel.equalsIgnoreCase("all") || EndermanWardConfig.logLevel.equalsIgnoreCase("info"))

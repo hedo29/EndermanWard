@@ -9,14 +9,10 @@ import net.minecraftforge.event.entity.EntityMobGriefingEvent;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.Random;
 
 public class EndermanEventHandler {
-
-    private static final Logger LOGGER = LogManager.getLogger();
 
     @SubscribeEvent
     public void onEndermanGrief(EntityMobGriefingEvent event) {
@@ -26,7 +22,6 @@ public class EndermanEventHandler {
                     event.setResult(Event.Result.DENY);
                     if (EndermanWardConfig.teleportOnWardDetection)
                         teleportAwayFromWard((EnderMan) event.getEntity());
-                } else {
                 }
             }
         }
@@ -40,13 +35,13 @@ public class EndermanEventHandler {
                     event.setCanceled(true);
                     if (EndermanWardConfig.teleportOnWardDetection)
                         teleportAwayFromWard((EnderMan) event.getEntity());
-                } else {
                 }
             }
         }
     }
 
     private boolean checkIfNearWard(EnderMan enderMan) {
+        int range = EndermanWardConfig.wardRadius;
         ServerLevel level = (ServerLevel) enderMan.level;
 
         double cur_x = enderMan.getX();
@@ -55,9 +50,9 @@ public class EndermanEventHandler {
 
 
         for(BlockPos wardPos: WardData.get(level).getWardList()) {
-            if(wardPos.getX() - 64 < cur_x || wardPos.getX() + 64 > cur_x
-                || wardPos.getY() - 64 < cur_y || wardPos.getY() + 64 > cur_y
-                || wardPos.getZ() - 64 < cur_z || wardPos.getZ() + 64 > cur_z) {
+            if(wardPos.getX() - range < cur_x || wardPos.getX() + range > cur_x
+                || wardPos.getY() - range < cur_y || wardPos.getY() + range > cur_y
+                || wardPos.getZ() - range < cur_z || wardPos.getZ() + range > cur_z) {
                 return true;
             }
         };
@@ -66,6 +61,8 @@ public class EndermanEventHandler {
     }
 
     private void teleportAwayFromWard(EnderMan enderMan) {
+
+        int range = EndermanWardConfig.wardRadius;
         Random random = new Random();
 
         int vector_x = 0;
@@ -80,15 +77,15 @@ public class EndermanEventHandler {
         }
 
         if(vector_x == 1) {
-            new_x += 64;
+            new_x += range;
         } else if(vector_x == 2) {
-            new_x -= 64;
+            new_x -= range;
         }
 
         if(vector_z == 1) {
-            new_z += 64;
+            new_z += range;
         } else if(vector_z == 2) {
-            new_z -= 64;
+            new_z -= range;
         }
 
         enderMan.teleportTo(new_x, enderMan.getY(), new_z);

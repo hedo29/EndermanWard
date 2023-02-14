@@ -7,41 +7,36 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.storage.DimensionDataStorage;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 public class WardData extends SavedData {
 
-    private static final Logger LOGGER = LogManager.getLogger();
-
     private ArrayList<BlockPos> wardList = new ArrayList<>();
 
     public ArrayList<BlockPos> getWardList() {
-        return wardList;
+        return this.wardList;
     }
 
     public void removeFromList(BlockPos block) {
-        try {
-           for(BlockPos ward: wardList) {
-               if(ward.getX() == block.getX() && ward.getY() == block.getY() && ward.getZ() == block.getZ()) {
-                   wardList.remove(ward);
-               }
-           }
+        BlockPos pos = null;
+        for(BlockPos ward: this.wardList) {
+            if(ward.getX() == block.getX() && ward.getY() == block.getY() && ward.getZ() == block.getZ()) {
+                pos = ward;
+            }
         }
-        catch  (Exception e) {
-            LOGGER.error("Tried to remove ward from ward list at " + block.getX() +  ", " + block.getY() + ", " + block.getZ() + ",  but it wasn't " +
-                    "registered as a ward. This can happen if you had a ward placed before the mod actually worked.");
+        if(null != pos) {
+            this.wardList.remove(pos);
+        } else {
+            EndermanWard.logMessageError("Attempted to remove a ward that wasn't listed in stored data. Please make sure your world is not write-protected or locked. This may cause wards to become ineffective when placed.");
         }
-        finally {
-            this.setDirty();
-        }
+        this.setDirty();
 
     }
 
     public void addToList(BlockPos block) {
-        wardList.add(block);
+        EndermanWard.logMessageDebug("Adding block with pos: " + block.getX() + ", " + block.getY() + ", " + block.getZ());
+        this.wardList.add(block);
         this.setDirty();
     }
 
@@ -49,7 +44,7 @@ public class WardData extends SavedData {
     public static WardData get(Level level) {
 
         if(level.isClientSide) {
-            throw new RuntimeException("No need to process data client-side");
+            throw new RuntimeException("No need to process data client-side.");
         }
 
         DimensionDataStorage dimensionData = ((ServerLevel) level).getDataStorage();
@@ -72,12 +67,17 @@ public class WardData extends SavedData {
 
         //Don't NPE on no wards being placed
         if(wards.isEmpty()) {
+            EndermanWard.logMessageWarn("No stored wards found for this dimension!");
             data.wardList = new ArrayList<>();
         }
 
         wards.forEach(rawTag -> {
 
             CompoundTag wardTag = (CompoundTag)rawTag;
+            EndermanWard.logMessageDebug("Found saved ward location at: " +
+                    wardTag.getInt("x") + ", " +
+                    wardTag.getInt("y") + ", " +
+                    wardTag.getInt("z"));
             data.wardList.add(new BlockPos(wardTag.getInt("x"), wardTag.getInt("y"), wardTag.getInt("z")));
         });
         return data;
@@ -86,8 +86,12 @@ public class WardData extends SavedData {
     @Override
     public CompoundTag save(CompoundTag tag) {
         ListTag wards = new ListTag();
-        wardList.forEach(ward -> {
+        this.wardList.forEach(ward -> {
             CompoundTag wardTag = new CompoundTag();
+            EndermanWard.logMessageDebug("Saving ward location at: " +
+                    ward.getX() + ", " +
+                    ward.getY() + ", " +
+                    ward.getZ());
             wardTag.putInt("x", ward.getX());
             wardTag.putInt("y", ward.getY());
             wardTag.putInt("z", ward.getZ());
