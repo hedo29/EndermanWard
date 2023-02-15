@@ -1,0 +1,11 @@
+{
+  //Blocks
+  "block.endermanward.enderman_ward": "Enderman Ward",
+
+  //Server Config
+  "config.endermanward.configVersion": "configVersion",
+  "config.endermanward.wardRadius": "wardRadius",
+  "config.endermanward.allowTeleporting": "allowTeleporting",
+  "config.endermanward.allowGriefing": "allowGriefing",
+  "config.endermanward.logLevel": "logLevel"
+}

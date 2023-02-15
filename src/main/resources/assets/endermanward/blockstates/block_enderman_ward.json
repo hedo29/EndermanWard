@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "endermanward:block/block_enderman_ward_model" }
+    }
+}
