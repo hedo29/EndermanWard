@@ -36,7 +36,7 @@ authors="Hedonic" #optional
 description='''
 This mod allows you to configure Enderman behavior without explicitly disabling mob griefing! Protect your home!'''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
-[[dependencies.dimdungeons]] #optional
+[[dependencies.endermanward]] #optional
 # the modid of the dependency
 modId="forge" #mandatory
 # Does this dependency have to exist - if not, ordering below must be specified
@@ -48,7 +48,7 @@ ordering="NONE"
 # Side this dependency is applied on - BOTH, CLIENT or SERVER
 side="BOTH"
 # Here's another dependency
-[[dependencies.dimdungeons]]
+[[dependencies.endermanward]]
 modId="minecraft"
 mandatory=true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version

@@ -5,6 +5,8 @@ import com.hedonic.endermanward.WardData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.EntityMobGriefingEvent;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -16,12 +18,14 @@ public class EndermanEventHandler {
 
     @SubscribeEvent
     public void onEndermanGrief(EntityMobGriefingEvent event) {
-        if (event.getEntity() instanceof EnderMan) {
-            if (checkIfNearWard((EnderMan) event.getEntity())) {
-                if (!EndermanWardConfig.allowGriefing) {
-                    event.setResult(Event.Result.DENY);
-                    if (EndermanWardConfig.teleportOnWardDetection)
-                        teleportAwayFromWard((EnderMan) event.getEntity());
+        if (!event.getEntity().getLevel().isClientSide) {
+            if (event.getEntity() instanceof EnderMan) {
+                if (checkIfNearWard((EnderMan) event.getEntity())) {
+                    if (!EndermanWardConfig.allowGriefing) {
+                        event.setResult(Event.Result.DENY);
+                        if (EndermanWardConfig.teleportOnWardDetection)
+                            teleportAwayFromWard((EnderMan) event.getEntity());
+                    }
                 }
             }
         }
@@ -29,12 +33,14 @@ public class EndermanEventHandler {
 
     @SubscribeEvent
     public void onEndermanTeleport(EntityTeleportEvent.EnderEntity event) {
-        if (event.getEntity() instanceof EnderMan) {
-            if (checkIfNearWard((EnderMan) event.getEntity())) {
-                if (!EndermanWardConfig.allowTeleporting) {
-                    event.setCanceled(true);
-                    if (EndermanWardConfig.teleportOnWardDetection)
-                        teleportAwayFromWard((EnderMan) event.getEntity());
+        if (!event.getEntity().getLevel().isClientSide) {
+            if (event.getEntity() instanceof EnderMan) {
+                if (checkIfNearWard((EnderMan) event.getEntity())) {
+                    if (!EndermanWardConfig.allowTeleporting) {
+                        event.setCanceled(true);
+                        if (EndermanWardConfig.teleportOnWardDetection)
+                            teleportAwayFromWard((EnderMan) event.getEntity());
+                    }
                 }
             }
         }
